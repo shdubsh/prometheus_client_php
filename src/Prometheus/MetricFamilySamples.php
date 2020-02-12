@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Prometheus;
 
-class MetricFamilySamples
+use JsonSerializable;
+
+class MetricFamilySamples implements JsonSerializable
 {
     /**
      * @var mixed
@@ -91,5 +93,19 @@ class MetricFamilySamples
     public function hasLabelNames(): bool
     {
         return !empty($this->labelNames);
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'type' => $this->type,
+            'name' => $this->name,
+            'help' => $this->help,
+            'labelNames' => $this->labelNames,
+            'samples' => $this->samples
+        ];
     }
 }

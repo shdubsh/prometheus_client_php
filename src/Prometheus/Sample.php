@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Prometheus;
 
-class Sample
+use JsonSerializable;
+
+class Sample implements JsonSerializable
 {
     /**
      * @var string
@@ -76,5 +78,18 @@ class Sample
     public function hasLabelNames(): bool
     {
         return !empty($this->labelNames);
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'name' => $this->name,
+            'labelNames' => $this->labelNames,
+            'labelValues' => $this->labelValues,
+            'value' => $this->value
+        ];
     }
 }
